@@ -1,4 +1,4 @@
-import { useAuthState } from '@/stores/store.auth';
+import { useAuthState } from '@/stores/auth.store';
 import { Input } from '../ui/input';
 import { Separator } from '../ui/separator';
 import { Button } from '../ui/button';

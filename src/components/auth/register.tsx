@@ -1,4 +1,4 @@
-import { useAuthState } from '@/stores/store.auth';
+import { useAuthState } from '@/stores/auth.store';
 import { Separator } from '../ui/separator';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
@@ -20,7 +20,7 @@ const Register = () => {
 	const [error, setError] = useState('');
 
 	const { setAuth } = useAuthState();
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 
 	const form = useForm<z.infer<typeof registerSchema>>({
 		resolver: zodResolver(registerSchema),
@@ -34,13 +34,13 @@ const Register = () => {
 		const { email, password } = values;
 		setIsLoading(true);
 		try {
-		const res =await	createUserWithEmailAndPassword(auth, email, password);
-		navigate('/')
+			const res = await createUserWithEmailAndPassword(auth, email, password);
+			navigate('/');
 		} catch (error) {
-        const result   = error as Error
-		setError(result.message)
-		}finally{
-			setIsLoading(true)
+			const result = error as Error;
+			setError(result.message);
+		} finally {
+			setIsLoading(true);
 		}
 	};
 	return (

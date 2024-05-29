@@ -2,21 +2,50 @@ import men from '@/assets/men.png';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { featuredItems, programs } from '@/constants';
+import { auth } from '@/firebase';
+import { useUserState } from '@/stores/user.store';
+import { CgGym,  } from 'react-icons/cg';
 import { FaArrowRightLong } from 'react-icons/fa6';
-import { Link } from 'react-router-dom';
+import { LuLogOut } from 'react-icons/lu';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
+	const { user, setUser } = useUserState();
+
+	const navigate = useNavigate();
+
+		const onLogout = () => {
+			auth.signOut().then(() => {
+				setUser(null);
+				navigate('/auth');
+			});
+		};
 	return (
 		<>
 			<div className='w-full h-screen flex items-center'>
 				<div className='max-w-xl ml-60 flex h-full flex-col justify-center'>
 					<h1 className='text-9xl font-semibold uppercase'>Workout with me</h1>
 					<p className='text-muted-foreground'>A huge selection ofhealth and fitness content, healthy recipes and transfotmation stories to help you get fit and stay fit</p>
-					<Link to={'/auth'}>
-						<Button className='w-fit mt-6 font-bold h-12' size={'lg'}>
-							Join club now
-						</Button>
-					</Link>
+					{user ? (
+						<div className='flex gap-4'>
+							<Link to={'/dashboard'}>
+								<Button className='w-fit mt-6 font-bold h-12' size={'lg'}>
+									<span>Go to GYM</span>
+									<CgGym className='w-5 h-5 ml-2' />
+								</Button>
+							</Link>
+							<Button className='w-fit mt-6 font-bold h-12' variant={'destructive'} size={'lg'} onClick={onLogout}>
+								<span>Logout</span>
+								<LuLogOut className='w-5 h-5 ml-2' />
+							</Button>
+						</div>
+					) : (
+						<Link to={'/auth'}>
+							<Button className='w-fit mt-6 font-bold h-12' size={'lg'}>
+								Join club now
+							</Button>
+						</Link>
+					)}
 					<div className='mt-24'>
 						<p className='text-muted-foreground'>AS FEATURD IN</p>
 						<div className='flex items-center gap-4 mt-2'>
